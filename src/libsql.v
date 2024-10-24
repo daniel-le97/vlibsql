@@ -178,6 +178,7 @@ struct C.libsql_connection_info_t {
 
 @[params; typedef]
 struct C.libsql_database_desc_t {
+mut:
 	//*The url to the primary database
 	url &char
 	//*Path to the database file or `:memory:`
@@ -189,7 +190,7 @@ struct C.libsql_database_desc_t {
 	//*Interval to periodicaly sync with primary
 	sync_interval u64
 	//*Cypher to be used with `encryption_key`
-	cypher Libsql_cypher_t
+	cypher int
 	//*If set, disable `read_your_writes`. To mantain consistency.
 	disable_read_your_writes bool
 	//*Enable Webpki connector
@@ -375,25 +376,50 @@ pub mut:
 	disable_read_your_writes bool
 }
 
-pub fn connect(conf Config) !DB {
-	// libsql_desc := Libsql_database_desc_t{
-	// 	url:  &char(conf.url.str)
-	// 	path: &char(conf.path.str)
-	// 	// auth_token:               &char(conf.auth_token.str)
-	// 	// encryption_key:           &char(conf.encryption_key.str)
-	// 	// sync_interval:            conf.sync_interval
-	// 	// webpki:                   conf.webpki
-	// 	// disable_read_your_writes: conf.disable_read_your_writes
-	// 	// cypher:                   conf.cypher
-	// }
-
-	real_desc := Libsql_database_desc_t{
-		path: c'local.db'
+fn create_desc(conf Config) Libsql_database_desc_t {
+	mut libsql_desc := Libsql_database_desc_t{
+		// url:  &char(conf.url.str)
+		// path: &char(conf.path.str)
+		// auth_token:               &char(conf.auth_token.str)
+		// encryption_key:           &char(conf.encryption_key.str)
+		// sync_interval:            conf.sync_interval
+		// webpki:                   conf.webpki
+		// disable_read_your_writes: conf.disable_read_your_writes
+		// cypher:                   conf.cypher
+	}
+	println(libsql_desc)
+	if conf.url.len > 0 {
+		libsql_desc.url = &char(conf.url.str)
+	}
+	if conf.path.len > 0 {
+		libsql_desc.path = &char(conf.path.str)
+	}
+	if conf.auth_token.len > 0 {
+		libsql_desc.auth_token = &char(conf.auth_token.str)
+	}
+	if conf.encryption_key.len > 0 {
+		libsql_desc.encryption_key = &char(conf.encryption_key.str)
+	}
+	if conf.sync_interval > 0 {
+		libsql_desc.sync_interval = conf.sync_interval
+	}
+	if conf.webpki {
+		libsql_desc.webpki = conf.webpki
+	}
+	if conf.disable_read_your_writes {
+		libsql_desc.disable_read_your_writes = conf.disable_read_your_writes
 	}
 
-	// println(libsql_desc)
-	// println(real_desc)
-	db := C.libsql_database_init(real_desc)
+	if conf.cypher != Libsql_cypher_t.default {
+		libsql_desc.cypher = int(conf.cypher)
+	}
+
+	return libsql_desc
+}
+
+pub fn connect(conf Config) !DB {
+	libsql_desc := create_desc(conf)
+	db := C.libsql_database_init(libsql_desc)
 	if !isnil(db.err) {
 		println('unable to create a database')
 		return libsql_error(db.err)
