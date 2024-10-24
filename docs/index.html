@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="x-ua-compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>vlibsql | vdoc</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<link
+			href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+		<link rel="manifest" href="site.webmanifest" />
+		<link rel="mask-icon" href="safari-pinned-tab.svg" color="#5bbad5" />
+		<meta name="msapplication-TileColor" content="#da532c" />
+		<meta name="theme-color" content="#ffffff" />
+		<link rel="stylesheet" href="doc.css" />
+		<link rel="stylesheet" href="normalize.css" />
+		<script src="dark-mode.js"></script>
+	</head>
+
+	<body>
+		<div><a id="skip-to-content-link" href="#main-content">Skip to content</a></div>
+		<div id="page">
+			<header class="doc-nav hidden">
+				<div class="heading-container">
+					<div class="heading">
+						<div class="info">
+							<div class="module">vlibsql</div>
+							<div class="toggle-version-container">
+								<span> 1cf38ed</span>
+								<div
+									id="dark-mode-toggle"
+									role="switch"
+									aria-checked="false"
+									aria-label="Toggle dark mode"
+								>
+									<svg xmlns="http://www.w3.org/2000/svg" class="light-icon" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.79 1.42-1.41zM4 10.5H1v2h3v-2zm9-9.95h-2V3.5h2V.55zm7.45 3.91l-1.41-1.41-1.79 1.79 1.41 1.41 1.79-1.79zm-3.21 13.7l1.79 1.8 1.41-1.41-1.8-1.79-1.4 1.4zM20 10.5v2h3v-2h-3zm-8-5c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm-1 16.95h2V19.5h-2v2.95zm-7.45-3.91l1.41 1.41 1.79-1.8-1.41-1.41-1.79 1.8z"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" class="dark-icon" enable-background="new 0 0 24 24" height="24" viewBox="0 0 24 24" width="24"><g><rect fill="none" height="24" width="24"/></g><g><g><g><path d="M11.1,12.08C8.77,7.57,10.6,3.6,11.63,2.01C6.27,2.2,1.98,6.59,1.98,12c0,0.14,0.02,0.28,0.02,0.42 C2.62,12.15,3.29,12,4,12c1.66,0,3.18,0.83,4.1,2.15C9.77,14.63,11,16.17,11,18c0,1.52-0.87,2.83-2.12,3.51 c0.98,0.32,2.03,0.5,3.11,0.5c3.5,0,6.58-1.8,8.37-4.52C18,17.72,13.38,16.52,11.1,12.08z"/></g><path d="M7,16l-0.18,0C6.4,14.84,5.3,14,4,14c-1.66,0-3,1.34-3,3s1.34,3,3,3c0.62,0,2.49,0,3,0c1.1,0,2-0.9,2-2 C9,16.9,8.1,16,7,16z"/></g></g></svg>
+
+								</div>
+							</div>
+							<svg xmlns="http://www.w3.org/2000/svg" id="toggle-menu" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+						</div>
+						<div id="search">
+							<input type="text" placeholder="Search... (beta)" autocomplete="off" />
+						</div>
+					</div>
+				</div>
+				<nav class="search hidden"></nav>
+				<nav class="content hidden">
+					<ul>
+						<li class="open"><a href="#blob">fn blob</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#connect">fn connect</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#get_value_type">fn get_value_type</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#integer">fn integer</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#null">fn null</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#real">fn real</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#setup">fn setup</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#text">fn text</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#Libsql_config_t">type Libsql_config_t</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#Libsql_result_value_t">type Libsql_result_value_t</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#Libsql_slice_t">type Libsql_slice_t</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#Libsql_value_t">type Libsql_value_t</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#Row.free">type Row</a>        <ul>
+<li><a href="#Row.free">fn free</a></li>
+<li><a href="#Row.value">fn value</a></li>
+<li><a href="#Row.name">fn name</a></li>
+<li><a href="#Row.length">fn length</a></li>
+<li><a href="#Row.empty">fn empty</a></li>
+</ul>
+</li>
+<li class="open"><a href="#Rows.free">type Rows</a>        <ul>
+<li><a href="#Rows.free">fn free</a></li>
+<li><a href="#Rows.next">fn next</a></li>
+<li><a href="#Rows.column_name">fn column_name</a></li>
+<li><a href="#Rows.column_length">fn column_length</a></li>
+</ul>
+</li>
+<li class="open"><a href="#Statement.free">type Statement</a>        <ul>
+<li><a href="#Statement.free">fn free</a></li>
+<li><a href="#Statement.execute">fn execute</a></li>
+<li><a href="#Statement.query">fn query</a></li>
+<li><a href="#Statement.reset">fn reset</a></li>
+<li><a href="#Statement.bind_named">fn bind_named</a></li>
+<li><a href="#Statement.bind_value">fn bind_value</a></li>
+</ul>
+</li>
+<li class="open"><a href="#Transaction.free">type Transaction</a>        <ul>
+<li><a href="#Transaction.free">fn free</a></li>
+<li><a href="#Transaction.commit">fn commit</a></li>
+<li><a href="#Transaction.rollback">fn rollback</a></li>
+<li><a href="#Transaction.prepare">fn prepare</a></li>
+<li><a href="#Transaction.batch">fn batch</a></li>
+</ul>
+</li>
+<li class="open"><a href="#Libsql_cypher_t">enum Libsql_cypher_t</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#C.libsql_slice_t">struct C.libsql_slice_t</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#C.libsql_value_t">struct C.libsql_value_t</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#C.libsql_value_union_t">struct C.libsql_value_union_t</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#Config">struct Config</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#DB">struct DB</a>        <ul>
+<li><a href="#DB.free">fn free</a></li>
+<li><a href="#DB.info">fn info</a></li>
+<li><a href="#DB.prepare">fn prepare</a></li>
+<li><a href="#DB.batch">fn batch</a></li>
+<li><a href="#DB.transaction">fn transaction</a></li>
+<li><a href="#DB.sync">fn sync</a></li>
+</ul>
+</li>
+
+					</ul>
+				</nav>
+			</header>
+			<div class="doc-scrollview" tabindex="-1" id="main-content">
+				<div class="doc-container">
+					<div class="doc-content">
+								<section id="vlibsql" class="doc-node">
+			<div class="title"><h1> vlibsql</h1></div>
+
+
+</section>
+
+		<section id="blob" class="doc-node">
+			<div class="title"><h2>fn blob <a href="#blob">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">blob</span><span class="token punctuation">(</span>b <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">u8</span><span class="token punctuation">)</span> Libsql_value_t</code></pre>
+
+
+</section>
+
+		<section id="connect" class="doc-node">
+			<div class="title"><h2>fn connect <a href="#connect">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">connect</span><span class="token punctuation">(</span>conf Config<span class="token punctuation">)</span> <span class="token operator">!</span>DB</code></pre>
+
+
+</section>
+
+		<section id="get_value_type" class="doc-node">
+			<div class="title"><h2>fn get_value_type <a href="#get_value_type">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">get_value_type</span><span class="token punctuation">(</span>val <span class="token builtin">int</span><span class="token punctuation">)</span> Libsql_type_t</code></pre>
+
+
+</section>
+
+		<section id="integer" class="doc-node">
+			<div class="title"><h2>fn integer <a href="#integer">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">integer</span><span class="token punctuation">(</span>i <span class="token builtin">i64</span><span class="token punctuation">)</span> Libsql_value_t</code></pre>
+<p>VALUES</p>
+
+</section>
+
+		<section id="null" class="doc-node">
+			<div class="title"><h2>fn null <a href="#null">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">null</span><span class="token punctuation">(</span><span class="token punctuation">)</span> Libsql_value_t</code></pre>
+
+
+</section>
+
+		<section id="real" class="doc-node">
+			<div class="title"><h2>fn real <a href="#real">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">real</span><span class="token punctuation">(</span>f <span class="token builtin">f64</span><span class="token punctuation">)</span> Libsql_value_t</code></pre>
+
+
+</section>
+
+		<section id="setup" class="doc-node">
+			<div class="title"><h2>fn setup <a href="#setup">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">setup</span><span class="token punctuation">(</span>config Libsql_config_t<span class="token punctuation">)</span> <span class="token operator">!</span></code></pre>
+<p>UTILS</p>
+
+</section>
+
+		<section id="text" class="doc-node">
+			<div class="title"><h2>fn text <a href="#text">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">text</span><span class="token punctuation">(</span>s <span class="token builtin">string</span><span class="token punctuation">)</span> Libsql_value_t</code></pre>
+
+
+</section>
+
+		<section id="Libsql_config_t" class="doc-node">
+			<div class="title"><h2>type Libsql_config_t <a href="#Libsql_config_t">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">type</span> Libsql_config_t <span class="token operator">=</span> C<span class="token punctuation">.</span>libsql_config_t</code></pre>
+
+
+</section>
+
+		<section id="Libsql_result_value_t" class="doc-node">
+			<div class="title"><h2>type Libsql_result_value_t <a href="#Libsql_result_value_t">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">type</span> Libsql_result_value_t <span class="token operator">=</span> C<span class="token punctuation">.</span>libsql_result_value_t</code></pre>
+
+
+</section>
+
+		<section id="Libsql_slice_t" class="doc-node">
+			<div class="title"><h2>type Libsql_slice_t <a href="#Libsql_slice_t">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">type</span> Libsql_slice_t <span class="token operator">=</span> C<span class="token punctuation">.</span>libsql_slice_t</code></pre>
+
+
+</section>
+
+		<section id="Libsql_value_t" class="doc-node">
+			<div class="title"><h2>type Libsql_value_t <a href="#Libsql_value_t">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">type</span> Libsql_value_t <span class="token operator">=</span> C<span class="token punctuation">.</span>libsql_value_t</code></pre>
+
+
+</section>
+
+		<section id="Row.free" class="doc-node">
+			<div class="title"><h2>fn (Row) free <a href="#Row.free">#</a></h2></div>
+<div class="attributes"><div class="attribute">unsafe</div></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> row Row<span class="token punctuation">)</span> <span class="token function">free</span><span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<p>Row</p>
+
+</section>
+
+		<section id="Row.value" class="doc-node">
+			<div class="title"><h2>fn (Row) value <a href="#Row.value">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span>row Row<span class="token punctuation">)</span> <span class="token function">value</span><span class="token punctuation">(</span>index <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token operator">!</span>Libsql_value_t</code></pre>
+<p>Get the value at the the index</p>
+
+</section>
+
+		<section id="Row.name" class="doc-node">
+			<div class="title"><h2>fn (Row) name <a href="#Row.name">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span>row Row<span class="token punctuation">)</span> <span class="token function">name</span><span class="token punctuation">(</span>index <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">string</span></code></pre>
+<p>Get the column name at the the index</p>
+
+</section>
+
+		<section id="Row.length" class="doc-node">
+			<div class="title"><h2>fn (Row) length <a href="#Row.length">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span>row Row<span class="token punctuation">)</span> <span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">int</span></code></pre>
+<p>Get row column count</p>
+
+</section>
+
+		<section id="Row.empty" class="doc-node">
+			<div class="title"><h2>fn (Row) empty <a href="#Row.empty">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span>row Row<span class="token punctuation">)</span> <span class="token function">empty</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">bool</span></code></pre>
+<p>Check if the row is empty, indicating the end of <code>Rows.next()</code></p>
+
+</section>
+
+		<section id="Rows.free" class="doc-node">
+			<div class="title"><h2>fn (Rows) free <a href="#Rows.free">#</a></h2></div>
+<div class="attributes"><div class="attribute">unsafe</div></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> rows Rows<span class="token punctuation">)</span> <span class="token function">free</span><span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<p>ROWS</p>
+
+</section>
+
+		<section id="Rows.next" class="doc-node">
+			<div class="title"><h2>fn (Rows) next <a href="#Rows.next">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> rows Rows<span class="token punctuation">)</span> <span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">?</span>Row</code></pre>
+<p>Get the next row from rows</p>
+
+</section>
+
+		<section id="Rows.column_name" class="doc-node">
+			<div class="title"><h2>fn (Rows) column_name <a href="#Rows.column_name">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> rows Rows<span class="token punctuation">)</span> <span class="token function">column_name</span><span class="token punctuation">(</span>index <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">string</span></code></pre>
+<p>Get the column name at the index</p>
+
+</section>
+
+		<section id="Rows.column_length" class="doc-node">
+			<div class="title"><h2>fn (Rows) column_length <a href="#Rows.column_length">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> rows Rows<span class="token punctuation">)</span> <span class="token function">column_length</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">int</span></code></pre>
+<p>Get rows column count</p>
+
+</section>
+
+		<section id="Statement.free" class="doc-node">
+			<div class="title"><h2>fn (Statement) free <a href="#Statement.free">#</a></h2></div>
+<div class="attributes"><div class="attribute">unsafe</div></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> stmt Statement<span class="token punctuation">)</span> <span class="token function">free</span><span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<p>Statement</p>
+
+</section>
+
+		<section id="Statement.execute" class="doc-node">
+			<div class="title"><h2>fn (Statement) execute <a href="#Statement.execute">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span>stmt Statement<span class="token punctuation">)</span> <span class="token function">execute</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!</span><span class="token builtin">u64</span></code></pre>
+<p>Execute a statement</p>
+
+</section>
+
+		<section id="Statement.query" class="doc-node">
+			<div class="title"><h2>fn (Statement) query <a href="#Statement.query">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span>stmt Statement<span class="token punctuation">)</span> <span class="token function">query</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!</span>Rows</code></pre>
+<p>Query a statement</p>
+
+</section>
+
+		<section id="Statement.reset" class="doc-node">
+			<div class="title"><h2>fn (Statement) reset <a href="#Statement.reset">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span>stmt Statement<span class="token punctuation">)</span> <span class="token function">reset</span><span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<p>Reset a statement</p>
+
+</section>
+
+		<section id="Statement.bind_named" class="doc-node">
+			<div class="title"><h2>fn (Statement) bind_named <a href="#Statement.bind_named">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span>stmt Statement<span class="token punctuation">)</span> <span class="token function">bind_named</span><span class="token punctuation">(</span>name <span class="token builtin">string</span><span class="token punctuation">,</span> val Libsql_value_t<span class="token punctuation">)</span> <span class="token operator">!</span></code></pre>
+<p>Bind a named argument to a statement</p>
+
+</section>
+
+		<section id="Statement.bind_value" class="doc-node">
+			<div class="title"><h2>fn (Statement) bind_value <a href="#Statement.bind_value">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span>stmt Statement<span class="token punctuation">)</span> <span class="token function">bind_value</span><span class="token punctuation">(</span>val Libsql_value_t<span class="token punctuation">)</span> <span class="token operator">!</span></code></pre>
+<p>Bind a positional argument to a statement</p>
+
+</section>
+
+		<section id="Transaction.free" class="doc-node">
+			<div class="title"><h2>fn (Transaction) free <a href="#Transaction.free">#</a></h2></div>
+<div class="attributes"><div class="attribute">unsafe</div></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> tx Transaction<span class="token punctuation">)</span> <span class="token function">free</span><span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<p>Transaction</p>
+
+</section>
+
+		<section id="Transaction.commit" class="doc-node">
+			<div class="title"><h2>fn (Transaction) commit <a href="#Transaction.commit">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span>tx Transaction<span class="token punctuation">)</span> <span class="token function">commit</span><span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<p>Deallocate and commit a transaction (transaction becomes invalid)</p>
+
+</section>
+
+		<section id="Transaction.rollback" class="doc-node">
+			<div class="title"><h2>fn (Transaction) rollback <a href="#Transaction.rollback">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span>tx Transaction<span class="token punctuation">)</span> <span class="token function">rollback</span><span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<p>Deallocate and rollback a transaction (transaction becomes invalid)</p>
+
+</section>
+
+		<section id="Transaction.prepare" class="doc-node">
+			<div class="title"><h2>fn (Transaction) prepare <a href="#Transaction.prepare">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span>tx Transaction<span class="token punctuation">)</span> <span class="token function">prepare</span><span class="token punctuation">(</span>_sql <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token operator">!</span>Statement</code></pre>
+<p>Prepare a statement in a transaction</p>
+
+</section>
+
+		<section id="Transaction.batch" class="doc-node">
+			<div class="title"><h2>fn (Transaction) batch <a href="#Transaction.batch">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span>tx Transaction<span class="token punctuation">)</span> <span class="token function">batch</span><span class="token punctuation">(</span>_sql <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token operator">!</span></code></pre>
+<p>Send a batch statement in a transaction</p>
+
+</section>
+
+		<section id="Libsql_cypher_t" class="doc-node">
+			<div class="title"><h2>enum Libsql_cypher_t <a href="#Libsql_cypher_t">#</a></h2></div>
+<div class="attributes"><div class="attribute">@[flags]</div></div>
+<pre class="signature">
+<code><span class="token keyword">enum</span> <span class="token symbol">Libsql_cypher_t</span> <span class="token punctuation">{</span>
+	default <span class="token operator">=</span> <span class="token number">0</span>
+	aes_256
+<span class="token punctuation">}</span></code></pre>
+
+
+</section>
+
+		<section id="C.libsql_slice_t" class="doc-node">
+			<div class="title"><h2>struct C.libsql_slice_t <a href="#C.libsql_slice_t">#</a></h2></div>
+<div class="attributes"><div class="attribute">@[typedef]</div></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> C<span class="token punctuation">.</span><span class="token symbol">libsql_slice_t</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span><span class="token punctuation">:</span>
+	ptr <span class="token builtin">voidptr</span>
+	len <span class="token builtin">usize</span>
+<span class="token punctuation">}</span></code></pre>
+
+
+</section>
+
+		<section id="C.libsql_value_t" class="doc-node">
+			<div class="title"><h2>struct C.libsql_value_t <a href="#C.libsql_value_t">#</a></h2></div>
+<div class="attributes"><div class="attribute">@[typedef]</div></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> C<span class="token punctuation">.</span><span class="token symbol">libsql_value_t</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span><span class="token punctuation">:</span>
+	value C<span class="token punctuation">.</span>libsql_value_union_t
+	<span class="token keyword">type</span>  <span class="token builtin">int</span>
+<span class="token punctuation">}</span></code></pre>
+
+
+</section>
+
+		<section id="C.libsql_value_union_t" class="doc-node">
+			<div class="title"><h2>struct C.libsql_value_union_t <a href="#C.libsql_value_union_t">#</a></h2></div>
+<div class="attributes"><div class="attribute">@[typedef]</div></div>
+<pre class="signature">
+<code><span class="token keyword">union</span> C<span class="token punctuation">.</span><span class="token symbol">libsql_value_union_t</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span><span class="token punctuation">:</span>
+	integer <span class="token builtin">i64</span>
+	real    <span class="token builtin">f64</span>
+	text    C<span class="token punctuation">.</span>libsql_slice_t
+	blob    C<span class="token punctuation">.</span>libsql_slice_t
+<span class="token punctuation">}</span></code></pre>
+
+
+</section>
+
+		<section id="Config" class="doc-node">
+			<div class="title"><h2>struct Config <a href="#Config">#</a></h2></div>
+<div class="attributes"><div class="attribute">@[params]</div></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">Config</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	url                      <span class="token builtin">string</span>
+	path                     <span class="token builtin">string</span>
+	auth_token               <span class="token builtin">string</span>
+	encryption_key           <span class="token builtin">string</span>
+	sync_interval            <span class="token builtin">u64</span>
+	webpki                   <span class="token builtin">bool</span>
+	cypher                   Libsql_cypher_t
+	disable_read_your_writes <span class="token builtin">bool</span>
+<span class="token punctuation">}</span></code></pre>
+<p>@[unsafe] pub fn (mut err LibsqlError) free() { C.libsql_error_deinit(err.libsql_error) unsafe { free(err) } }</p>
+
+</section>
+
+		<section id="DB" class="doc-node">
+			<div class="title"><h2>struct DB <a href="#DB">#</a></h2></div>
+<div class="attributes"><div class="attribute">@[heap]</div></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">DB</span> <span class="token punctuation">{</span>
+<span class="token keyword">mut</span><span class="token punctuation">:</span>
+	conn C<span class="token punctuation">.</span>libsql_connection_t
+	db   C<span class="token punctuation">.</span>libsql_database_t
+<span class="token punctuation">}</span></code></pre>
+
+
+</section>
+
+		<section id="DB.free" class="doc-node">
+			<div class="title"><h2>fn (DB) free <a href="#DB.free">#</a></h2></div>
+<div class="attributes"><div class="attribute">unsafe</div></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> db DB<span class="token punctuation">)</span> <span class="token function">free</span><span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+
+
+</section>
+
+		<section id="DB.info" class="doc-node">
+			<div class="title"><h2>fn (DB) info <a href="#DB.info">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span>db DB<span class="token punctuation">)</span> <span class="token function">info</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!</span>Info</code></pre>
+
+
+</section>
+
+		<section id="DB.prepare" class="doc-node">
+			<div class="title"><h2>fn (DB) prepare <a href="#DB.prepare">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span>db DB<span class="token punctuation">)</span> <span class="token function">prepare</span><span class="token punctuation">(</span>_sql <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token operator">!</span>Statement</code></pre>
+<p>Prepare a statement in a connection</p>
+
+</section>
+
+		<section id="DB.batch" class="doc-node">
+			<div class="title"><h2>fn (DB) batch <a href="#DB.batch">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span>db DB<span class="token punctuation">)</span> <span class="token function">batch</span><span class="token punctuation">(</span>_sql <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token operator">!</span></code></pre>
+<p>Send a batch statement in a connection</p>
+
+</section>
+
+		<section id="DB.transaction" class="doc-node">
+			<div class="title"><h2>fn (DB) transaction <a href="#DB.transaction">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span>db DB<span class="token punctuation">)</span> <span class="token function">transaction</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!</span>Transaction</code></pre>
+<p>Begin a transaction</p>
+
+</section>
+
+		<section id="DB.sync" class="doc-node">
+			<div class="title"><h2>fn (DB) sync <a href="#DB.sync">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span>db DB<span class="token punctuation">)</span> <span class="token function">sync</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!</span>Sync</code></pre>
+<p>Sync frames with the primary</p>
+
+</section>
+
+
+						<div class="footer">Powered by vdoc. Generated on: 24 Oct 2024 15:34:48</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+		<script src="doc.js"></script>
+		<script async src="search_index.js"></script>
+	</body>
+</html>
