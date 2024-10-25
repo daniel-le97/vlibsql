@@ -32,4 +32,4 @@ learn more at
 
 4. Copy `libsql.h` and the compiled library to your project directory or a standard system location.
 
-5. this wrapper uses liblibsql.a
+5. this wrapper uses ```liblibsql.a```
