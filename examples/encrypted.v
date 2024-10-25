@@ -4,7 +4,15 @@ import vlibsql
 
 fn main() {
 	vlibsql.setup(vlibsql.Libsql_config_t{}) or { panic(err) }
-	db := vlibsql.connect(path: 'local.db') or { panic(err) }
+
+	secret := 'my_secret_key'
+
+	db := vlibsql.connect(
+		path:           'encrypted.db'
+		encryption_key: secret
+		cypher:         .aes_256
+	) or { panic(err) }
+
 	defer {
 		unsafe {
 			db.free()
@@ -56,4 +64,6 @@ fn main() {
 	unsafe {
 		rows.free()
 	}
+
+	println('Database is now encrypted with AES-256')
 }

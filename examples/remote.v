@@ -6,13 +6,22 @@ import os
 fn main() {
 	env_path := '${@VMODROOT}/.env'
 	load_env(env_path, false)
-	libsql_url := os.getenv('LIBSQL_URL') or { panic('LIBSQL_URL not set in ${env_path}') }
-	libsql_auth_token := os.getenv('LIBSQL_AUTH_TOKEN') or { panic('LIBSQL_AUTH_TOKEN not set in ${env_path}') }
+	libsql_url := os.getenv('LIBSQL_URL')
+	libsql_auth_token := os.getenv('LIBSQL_AUTH_TOKEN')
+
+	if libsql_auth_token.len == 0 {
+		panic('LIBSQL_AUTH_TOKEN is not set in ${env_path}')
+	}
+
+	if libsql_url.len == 0 {
+		panic('LIBSQL_URL is not set in ${env_path}')
+	}
+
 	vlibsql.setup(vlibsql.Libsql_config_t{}) or { panic(err) }
 
 	db := vlibsql.connect(
 		url:        libsql_url
-		path:       'local.db'
+		path:       'remote.db'
 		auth_token: libsql_auth_token
 	) or { panic(err) }
 

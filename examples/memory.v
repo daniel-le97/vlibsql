@@ -4,7 +4,7 @@ import vlibsql
 
 fn main() {
 	vlibsql.setup(vlibsql.Libsql_config_t{}) or { panic(err) }
-	db := vlibsql.connect(path: 'local.db') or { panic(err) }
+	db := vlibsql.connect(path: ':memory:') or { panic(err) }
 	defer {
 		unsafe {
 			db.free()
