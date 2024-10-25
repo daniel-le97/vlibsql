@@ -10,7 +10,22 @@ learn more at
 - V ORM is not yet supported
 - [libsql-c](https://github.com/tursodatabase/libsql-c) SDK is currently in technical preview, and mostly used for internal use when building other libSQL SDKs
 
-## building libsql-c manually
+# building
+cargo and rust need to be installed [Rust and Cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html)
+
+1. this will install libsql-c if not found
+
+
+```bash
+make update
+```
+
+2. dynamic library
+```bash
+make update LIBRARY_LIB=liblibsql.dylib
+```
+
+## manually
 
 1. Clone the repository:
 
@@ -29,7 +44,8 @@ learn more at
    - `liblibsql.so` (Linux)
    - `liblibsql.dylib` (macOS)
    - `liblibsql.dll` (Windows)
+   - `liblibsql.a` (static)
 
 4. Copy `libsql.h` and the compiled library to your project directory or a standard system location.
 
-5. this wrapper uses ```liblibsql.a```
+5. this wrapper supports static library or dynamic library

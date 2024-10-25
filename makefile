@@ -1,5 +1,7 @@
 
-.PHONY: docs fmt test run symlink clean-symlink clean-examples
+.PHONY: docs fmt test run symlink clean-symlink clean-examples update examples
+
+LIBRARY_LIB ?= liblibsql.a
 
 docs:
 	rm -rf ./docs
@@ -28,3 +30,22 @@ clean-symlink:
 clean-examples:
 	find ./examples -type f ! -name "*.v" -exec rm {} \;
 
+update:
+	@if [ -d "$(CURDIR)/libsql-c" ]; then \
+		echo "libsql-c exists, proceeding with update..."; \
+		cd $(CURDIR)/libsql-c && git pull && cargo build --release --features encryption; \
+		mv $(CURDIR)/libsql-c/target/release/$(LIBRARY_LIB) $(CURDIR)/thirdparty/$(LIBRARY_LIB); \
+		cp $(CURDIR)/libsql-c/libsql.h $(CURDIR)/thirdparty/libsql.h; \
+	else \
+		echo "libsql-c does not exist, installing..."; \
+		git clone https://github.com/tursodatabase/libsql-c.git $(CURDIR)/libsql-c; \
+		cd $(CURDIR)/libsql-c && cargo build --release --features encryption; \
+		mv $(CURDIR)/libsql-c/target/release/$(LIBRARY_LIB) $(CURDIR)/thirdparty/$(LIBRARY_LIB); \
+		cp $(CURDIR)/libsql-c/libsql.h $(CURDIR)/thirdparty/libsql.h; \
+	fi
+
+examples:
+	v examples/encrypted.v
+	v examples/local.v
+	v examples/memory.v
+	v examples/remote.v
