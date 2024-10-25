@@ -387,7 +387,7 @@ fn create_desc(conf Config) Libsql_database_desc_t {
 		// disable_read_your_writes: conf.disable_read_your_writes
 		// cypher:                   conf.cypher
 	}
-	println(libsql_desc)
+	// println(libsql_desc)
 	if conf.url.len > 0 {
 		libsql_desc.url = &char(conf.url.str)
 	}
