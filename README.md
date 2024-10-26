@@ -9,6 +9,7 @@ learn more at
 
 - V ORM is not yet supported
 - [libsql-c](https://github.com/tursodatabase/libsql-c) SDK is currently in technical preview, and mostly used for internal use when building other libSQL SDKs
+- libsql-c does not expose the sqlite compatible C api
 
 # building
 cargo and rust need to be installed [Rust and Cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html)
@@ -20,7 +21,7 @@ cargo and rust need to be installed [Rust and Cargo](https://doc.rust-lang.org/c
 make update
 ```
 
-2. dynamic library
+2. dynamic library (example)
 
 ```bash
 make update LIBRARY_LIB=liblibsql.dylib
