@@ -403,6 +403,8 @@ fn create_desc(conf Config) Libsql_database_desc_t {
 	return libsql_desc
 }
 
+
+
 pub fn connect(conf Config) !DB {
 	libsql_desc := create_desc(conf)
 	db := C.libsql_database_init(libsql_desc)
