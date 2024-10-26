@@ -19,7 +19,7 @@
   - [value](#value)
   - [name](#name)
   - [length](#length)
-  - [empty](#empty)
+  - [is_empty](#is_empty)
 - [Rows](#Rows)
   - [free](#free)
   - [next](#next)
@@ -130,9 +130,9 @@ Get row column count
 
 [[Return to contents]](#Contents)
 
-## empty
+## is_empty
 ```v
-fn (row Row) empty() bool
+fn (row Row) is_empty() bool
 ```
 Check if the row is empty, indicating the end of `Rows.next()`
 
@@ -332,4 +332,4 @@ Sync frames with the primary
 
 [[Return to contents]](#Contents)
 
-#### Powered by vdoc. Generated on: 24 Oct 2024 15:34:48
+#### Powered by vdoc. Generated on: 25 Oct 2024 20:56:08
