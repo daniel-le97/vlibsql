@@ -21,6 +21,7 @@ make update
 ```
 
 2. dynamic library
+
 ```bash
 make update LIBRARY_LIB=liblibsql.dylib
 ```
@@ -46,6 +47,7 @@ make update LIBRARY_LIB=liblibsql.dylib
    - `liblibsql.dll` (Windows)
    - `liblibsql.a` (static)
 
-4. Copy `libsql.h` and the compiled library to your project directory or a standard system location.
+4. Copy `libsql.h` and the compiled library to ./thirdparty
 
 5. this wrapper supports static library or dynamic library
+

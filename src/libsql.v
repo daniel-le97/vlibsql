@@ -377,6 +377,9 @@ pub mut:
 }
 
 fn create_desc(conf Config) Libsql_database_desc_t {
+	// im manually assigning the values instead of intializing the struct
+	// because if ex.  &char(conf.url.str) is empty, usage of Libsql_database_desc_t will error out
+
 	mut libsql_desc := Libsql_database_desc_t{
 		// url:  &char(conf.url.str)
 		// path: &char(conf.path.str)
@@ -387,7 +390,7 @@ fn create_desc(conf Config) Libsql_database_desc_t {
 		// disable_read_your_writes: conf.disable_read_your_writes
 		// cypher:                   conf.cypher
 	}
-	// println(libsql_desc)
+
 	if conf.url.len > 0 {
 		libsql_desc.url = &char(conf.url.str)
 	}
@@ -401,7 +404,7 @@ fn create_desc(conf Config) Libsql_database_desc_t {
 		libsql_desc.encryption_key = &char(conf.encryption_key.str)
 	}
 	if conf.sync_interval > 0 {
-		libsql_desc.sync_interval = conf.sync_interval
+		libsql_desc.sync_interval = u64(conf.sync_interval)
 	}
 	if conf.webpki {
 		libsql_desc.webpki = conf.webpki
@@ -489,6 +492,7 @@ pub fn (db DB) transaction() !Transaction {
 }
 
 struct Sync {
+pub:
 	frame_no      u64
 	frames_synced u64
 }
@@ -614,7 +618,7 @@ pub fn (mut rows Rows) next() ?Row {
 	row := Row{
 		row: C.libsql_rows_next(rows.rows)
 	}
-	if row.empty() {
+	if row.is_empty() {
 		return none
 	}
 	if !isnil(row.row.err) {
@@ -669,7 +673,7 @@ pub fn (row Row) length() int {
 }
 
 // Check if the row is empty, indicating the end of `Rows.next()`
-pub fn (row Row) empty() bool {
+pub fn (row Row) is_empty() bool {
 	return C.libsql_row_empty(row.row)
 }
 
