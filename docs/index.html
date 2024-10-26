@@ -339,7 +339,7 @@
 <div class="attributes"><div class="attribute">unsafe</div></div>
 <pre class="signature">
 <code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> stmt Statement<span class="token punctuation">)</span> <span class="token function">free</span><span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
-<p>Statement</p>
+<p>Deallocate and close a statement</p>
 
 </section>
 
@@ -388,7 +388,7 @@
 <div class="attributes"><div class="attribute">unsafe</div></div>
 <pre class="signature">
 <code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> tx Transaction<span class="token punctuation">)</span> <span class="token function">free</span><span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
-<p>Transaction</p>
+<p>internally this also calls <code>tx.commit()</code></p>
 
 </section>
 
@@ -514,15 +514,15 @@
 <div class="attributes"><div class="attribute">unsafe</div></div>
 <pre class="signature">
 <code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> db DB<span class="token punctuation">)</span> <span class="token function">free</span><span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
-
+<p>this will deallocate and close the connection and database</p>
 
 </section>
 
 		<section id="DB.info" class="doc-node">
 			<div class="title"><h2>fn (DB) info <a href="#DB.info">#</a></h2></div>
 <pre class="signature">
-<code><span class="token keyword">fn</span> <span class="token punctuation">(</span>db DB<span class="token punctuation">)</span> <span class="token function">info</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!</span>Info</code></pre>
-
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span>db DB<span class="token punctuation">)</span> <span class="token function">info</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!</span><span class="token punctuation">(</span><span class="token builtin">i64</span><span class="token punctuation">,</span> <span class="token builtin">u64</span><span class="token punctuation">)</span></code></pre>
+<p>Returns last_inserted_rowid and total_changes</p>
 
 </section>
 
@@ -559,7 +559,7 @@
 </section>
 
 
-						<div class="footer">Powered by vdoc. Generated on: 25 Oct 2024 20:56:08</div>
+						<div class="footer">Powered by vdoc. Generated on: 25 Oct 2024 21:18:39</div>
 					</div>
 					
 				</div>

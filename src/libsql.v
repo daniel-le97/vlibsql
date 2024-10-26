@@ -339,29 +339,11 @@ struct Row {
 	row C.libsql_row_t
 }
 
-struct Info {
-	last_inserted_rowid i64
-	total_changes       u64
-}
-
-// struct LibsqlError {
-// 	Error
-// 	libsql_error &C.libsql_error_t
+// struct Info {
+// 	last_inserted_rowid i64
+// 	total_changes       u64
 // }
 
-// pub fn (err LibsqlError) msg() string {
-// 	unsafe {
-// 		return cstring_to_vstring(C.libsql_error_message(err.libsql_error))
-// 	}
-// }
-
-// @[unsafe]
-// pub fn (mut err LibsqlError) free() {
-// 	C.libsql_error_deinit(err.libsql_error)
-// 	unsafe {
-// 		free(err)
-// 	}
-// }
 
 @[params]
 pub struct Config {
@@ -375,6 +357,7 @@ pub mut:
 	cypher                   Libsql_cypher_t
 	disable_read_your_writes bool
 }
+
 
 fn create_desc(conf Config) Libsql_database_desc_t {
 	// im manually assigning the values instead of intializing the struct
@@ -440,6 +423,7 @@ pub fn connect(conf Config) !DB {
 	return database
 }
 
+// this will deallocate and close the connection and database
 @[unsafe]
 pub fn (mut db DB) free() {
 	C.libsql_connection_deinit(db.conn)
@@ -449,13 +433,11 @@ pub fn (mut db DB) free() {
 	}
 }
 
-pub fn (db DB) info() !Info {
+// Returns last_inserted_rowid and total_changes
+pub fn (db DB) info() !(i64,u64) {
 	info := C.libsql_connection_info(db.conn)
 	if isnil(info.err) {
-		return Info{
-			last_inserted_rowid: info.last_inserted_rowid
-			total_changes:       info.total_changes
-		}
+		return info.last_inserted_rowid, info.total_changes
 	}
 	return libsql_error(info.err)
 }
@@ -511,6 +493,7 @@ pub fn (db DB) sync() !Sync {
 
 // Transaction
 
+// internally this also calls `tx.commit()`
 @[unsafe]
 pub fn (mut tx Transaction) free() {
 	tx.commit()
@@ -553,6 +536,7 @@ pub fn (tx Transaction) batch(_sql string) ! {
 
 // Statement
 
+// Deallocate and close a statement
 @[unsafe]
 pub fn (mut stmt Statement) free() {
 	C.libsql_statement_deinit(stmt.statement)

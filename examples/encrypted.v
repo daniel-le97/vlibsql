@@ -23,6 +23,8 @@ fn main() {
 	CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT);
 	INSERT INTO users (name) VALUES ('Iku Turso');
 	"
+
+
 	db.batch(setup_sql) or { panic(err) }
 	forenames := ['John', 'Jane', 'Jack', 'Jill']
 	surnames := ['Smith', 'Doe', 'Black', 'White']

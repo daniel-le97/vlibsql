@@ -176,7 +176,7 @@ Get rows column count
 ```v
 fn (mut stmt Statement) free()
 ```
-Statement
+Deallocate and close a statement
 
 [[Return to contents]](#Contents)
 
@@ -225,7 +225,7 @@ Bind a positional argument to a statement
 ```v
 fn (mut tx Transaction) free()
 ```
-Transaction
+internally this also calls `tx.commit()`
 
 [[Return to contents]](#Contents)
 
@@ -295,9 +295,19 @@ pub mut:
 [[Return to contents]](#Contents)
 
 ## free
+```v
+fn (mut db DB) free()
+```
+this will deallocate and close the connection and database
+
 [[Return to contents]](#Contents)
 
 ## info
+```v
+fn (db DB) info() !(i64, u64)
+```
+Returns last_inserted_rowid and total_changes
+
 [[Return to contents]](#Contents)
 
 ## prepare
@@ -332,4 +342,4 @@ Sync frames with the primary
 
 [[Return to contents]](#Contents)
 
-#### Powered by vdoc. Generated on: 25 Oct 2024 20:56:08
+#### Powered by vdoc. Generated on: 25 Oct 2024 21:18:39
