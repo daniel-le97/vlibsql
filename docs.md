@@ -44,12 +44,21 @@
 - [C.libsql_value_union_t](#C.libsql_value_union_t)
 - [Config](#Config)
 - [DB](#DB)
+  - [batch](#batch)
+  - [create](#create)
+  - [delete](#delete)
+  - [drop](#drop)
+  - [exec](#exec)
   - [free](#free)
   - [info](#info)
+  - [insert](#insert)
+  - [last_id](#last_id)
   - [prepare](#prepare)
-  - [batch](#batch)
-  - [transaction](#transaction)
+  - [query](#query)
+  - [select](#select)
   - [sync](#sync)
+  - [transaction](#transaction)
+  - [update](#update)
 
 ## blob
 [[Return to contents]](#Contents)
@@ -287,11 +296,46 @@ pub mut:
 	disable_read_your_writes bool
 }
 ```
-@[unsafe] pub fn (mut err LibsqlError) free() { C.libsql_error_deinit(err.libsql_error) unsafe { free(err) } }
+struct Info { last_inserted_rowid i64 total_changes       u64 }
 
 [[Return to contents]](#Contents)
 
 ## DB
+[[Return to contents]](#Contents)
+
+## batch
+```v
+fn (db DB) batch(_sql string) !
+```
+Send a batch statement in a connection
+
+[[Return to contents]](#Contents)
+
+## create
+```v
+fn (db DB) create(table string, fields []orm.TableField) !
+```
+create is used internally by V's ORM for processing table creation queries (DDL)
+
+[[Return to contents]](#Contents)
+
+## delete
+```v
+fn (db DB) delete(table string, where orm.QueryData) !
+```
+delete is used internally by V's ORM for processing `DELETE ` queries
+
+[[Return to contents]](#Contents)
+
+## drop
+```v
+fn (db DB) drop(table string) !
+```
+drop is used internally by V's ORM for processing table destroying queries (DDL)
+
+[[Return to contents]](#Contents)
+
+## exec
 [[Return to contents]](#Contents)
 
 ## free
@@ -310,6 +354,22 @@ Returns last_inserted_rowid and total_changes
 
 [[Return to contents]](#Contents)
 
+## insert
+```v
+fn (db DB) insert(table string, data orm.QueryData) !
+```
+insert is used internally by V's ORM for processing `INSERT` queries
+
+[[Return to contents]](#Contents)
+
+## last_id
+```v
+fn (db DB) last_id() int
+```
+last_id is used internally by V's ORM for post-processing `INSERT` queries
+
+[[Return to contents]](#Contents)
+
 ## prepare
 ```v
 fn (db DB) prepare(_sql string) !Statement
@@ -318,19 +378,14 @@ Prepare a statement in a connection
 
 [[Return to contents]](#Contents)
 
-## batch
-```v
-fn (db DB) batch(_sql string) !
-```
-Send a batch statement in a connection
-
+## query
 [[Return to contents]](#Contents)
 
-## transaction
+## select
 ```v
-fn (db DB) transaction() !Transaction
+fn (db DB) select(config orm.SelectConfig, data orm.QueryData, where orm.QueryData) ![][]orm.Primitive
 ```
-Begin a transaction
+select is used internally by V's ORM for processing `SELECT` queries
 
 [[Return to contents]](#Contents)
 
@@ -342,4 +397,20 @@ Sync frames with the primary
 
 [[Return to contents]](#Contents)
 
-#### Powered by vdoc. Generated on: 25 Oct 2024 21:18:39
+## transaction
+```v
+fn (db DB) transaction() !Transaction
+```
+Begin a transaction
+
+[[Return to contents]](#Contents)
+
+## update
+```v
+fn (db DB) update(table string, data orm.QueryData, where orm.QueryData) !
+```
+update is used internally by V's ORM for processing `UPDATE` queries
+
+[[Return to contents]](#Contents)
+
+#### Powered by vdoc. Generated on: 27 Oct 2024 12:31:32

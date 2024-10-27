@@ -3,73 +3,9 @@ module vlibsql
 import orm
 // import time
 
-// select is used internally by V's ORM for processing `SELECT ` queries
-pub fn (db DB) select(config orm.SelectConfig, data orm.QueryData, where orm.QueryData) ![][]orm.Primitive {
-	// 1. Create query and bind necessary data
-	query := orm.orm_select_gen(config, '`', true, '?', 1, where)
-	println(query)
-	// $if trace_sqlite ? {
-	// 	eprintln('> select query: "${query}"')
-	// }
-	// stmt := db.new_init_stmt(query)!
-	// defer {
-	// 	stmt.finalize()
-	// }
-	// mut c := 1
-	// sqlite_stmt_binder(stmt, where, query, mut c)!
-	// sqlite_stmt_binder(stmt, data, query, mut c)!
-
-	mut ret := [][]orm.Primitive{}
-
-	// if config.is_count {
-	// 	// 2. Get count of returned values & add it to ret array
-	// 	step := stmt.step()
-	// 	if step !in [sqlite_row, sqlite_field_strs, sqlite_done] {
-	// 		return db.error_message(step, query)
-	// 	}
-	// 	count := stmt.sqlite_select_column(0, 8)!
-	// 	ret << [count]
-	// 	return ret
-	// }
-	// for {
-	// 	// 2. Parse returned values
-	// 	step := stmt.step()
-	// 	if step == sqlite_done {
-	// 		break
-	// 	}
-	// 	if step != sqlite_field_strs && step != sqlite_row {
-	// 		break
-	// 	}
-	// 	mut row := []orm.Primitive{}
-	// 	for i, typ in config.types {
-	// 		primitive := stmt.sqlite_select_column(i, typ)!
-	// 		row << primitive
-	// 	}
-	// 	ret << row
-	// }
-	return ret
-}
-
-// sql stmt
-
-// insert is used internally by V's ORM for processing `INSERT ` queries
-pub fn (db DB) insert(table string, data orm.QueryData) ! {
-	println('Insert:')
-	_, converted_data := orm.orm_stmt_gen(.sqlite, table, '', .insert, false, '?', 1,
-		data, orm.QueryData{})
-
-	query := 'INSERT INTO ${table} (${converted_data.fields.join(', ')}) VALUES (:${converted_data.fields.join(', :')});'
-
-	stmt := db.prepare(query)!
-
-	defer {
-		unsafe {
-			stmt.free()
-		}
-	}
-
-	for idx, name in converted_data.fields {
-		prim := converted_data.data[idx]
+fn statement_binder(stm Statement, data orm.QueryData) ! {
+	for idx, name in data.fields {
+		prim := data.data[idx]
 
 		val := match prim {
 			i8, i16, int, u8, u16, u32, bool, i64, u64 {
@@ -81,50 +17,193 @@ pub fn (db DB) insert(table string, data orm.QueryData) ! {
 			string {
 				text(string(prim))
 			}
-			// orm.InfixType {
-			// 	integer(i64(prim.right))
-
-			// }
+			orm.InfixType {
+				// integer(prim.right)
+				print('InfixType')
+				null()
+			}
 			else {
 				null()
 			}
 		}
-		if converted_data.fields.len == 1 {
-			stmt.bind_value(val) or { panic('unable to bind ${name}: ${err}') }
-		} else {
-			stmt.bind_named(':${name}', val) or { panic('unable to bind ${name}: ${err}') }
+		// if data.fields.len == 1 {
+		// 	stm.bind_value(val) or { panic('unable to bind ${name}: ${err}') }
+		// } else {
+		stm.bind_named(':${name}', val) or { panic('unable to bind ${name}: ${err}') }
+		// }
+	}
+}
+
+fn query_converter(db DB, query string, query_data []orm.QueryData) !Statement {
+	mut counter := 1
+	mut new_query := query
+
+	for data in query_data {
+		for name in data.fields {
+			new_query = new_query.replace(':${counter}', ':${name}')
+			counter++
+		}
+	}
+
+	stmt := db.prepare(new_query)!
+	for data in query_data {
+		statement_binder(stmt, data) or { panic(err) }
+	}
+
+	return stmt
+}
+
+// select is used internally by V's ORM for processing `SELECT` queries
+pub fn (db DB) select(config orm.SelectConfig, data orm.QueryData, where orm.QueryData) ![][]orm.Primitive {
+	// 1. Create query and bind necessary data
+	query := orm.orm_select_gen(config, '', true, ':', 1, where)
+	stmt := query_converter(db, query, [data, where])!
+
+	defer {
+		unsafe {
+			stmt.free()
+		}
+	}
+
+	rows := stmt.query() or {
+		panic('${@FILE} unable to execute select query: ${query}, error: ${err}')
+	}
+	mut ret := [][]orm.Primitive{}
+	for row in rows {
+		mut prim := []orm.Primitive{}
+		cols := row.length()
+		for i in 0 .. cols {
+			val := row.value(i)!
+			val_type := get_value_type(val.type)
+			// println(val_type)
+
+			// if val_type == .text {
+			// 	prim << unsafe { cstring_to_vstring(val.value.text.ptr) }
+			// } else if val_type == .integer {
+			// 	unsafe {
+			// 		if val.value.integer
+
+			// 	}
+			// }
+			// else if val_type == .real {
+			// 	prim << real(val.value.real)
+			// } else {
+			// 	prim << null()
+
+			// }
+			pri := match val_type {
+				.text {
+					unsafe {
+						orm.Primitive(cstring_to_vstring(val.value.text.ptr))
+					}
+				}
+				.integer {
+					// o := val.value.integer
+					// unsafe {
+					// okay := int(val.value.integer)
+					// println(okay)
+
+					// }
+					// dump(typeof[o]().idx)
+					// if val.value.integer != none {
+					// } else {
+					// 	''
+					// }
+					// a := if _ := val.value.integer { 'exists' } else { 'none' }
+					unsafe {
+						orm.Primitive(int(val.value.integer))
+					}
+				}
+				.real {
+					unsafe {
+						f64(val.value.real)
+					}
+				}
+				// .blob
+				else {
+					orm.null_primitive
+				}
+			}
+			// println(typeof[pri]())
+			// print(pri)
+			prim << pri
+		}
+		ret << prim
+		// id_ptr := row.value(0) or { panic(err) }
+		// name_ptr := row.value(1) or { panic(err) }
+		// unsafe {
+		// 	id := id_ptr.value.integer
+		// 	// 	name := name_ptr.value.text.ptr
+		// 	println('id: ${id}')
+		// 	// 	println('name: ${cstring_to_vstring(name)}')
+		// 	// 	row.free()
+		// }
+	}
+
+	return ret
+}
+
+// sql stmt
+
+// insert is used internally by V's ORM for processing `INSERT` queries
+pub fn (db DB) insert(table string, data orm.QueryData) ! {
+	_, converted_data := orm.orm_stmt_gen(.sqlite, table, '', .insert, false, '?', 1,
+		data, orm.QueryData{})
+
+	// libsql expects sql like: UPDATE users SET name = :name WHERE id = :id;
+	query := 'INSERT INTO ${table} (${converted_data.fields.join(', ')}) VALUES (:${converted_data.fields.join(', :')});'
+
+	stmt := db.prepare(query)!
+
+	defer {
+		unsafe {
+			stmt.free()
+		}
+	}
+	statement_binder(stmt, converted_data) or { panic(err) }
+	stmt.execute() or { panic('${@FILE} unable execute query: ${query}, error: ${err}') }
+}
+
+// update is used internally by V's ORM for processing `UPDATE` queries
+pub fn (db DB) update(table string, data orm.QueryData, where orm.QueryData) ! {
+	mut query, _ := orm.orm_stmt_gen(.sqlite, table, '', .update, true, ':', 1, data,
+		where)
+
+	// turn UPDATE users SET name = ?1 WHERE id = ?2;
+	// into UPDATE users SET name = :name WHERE id = :id;
+	stmt := query_converter(db, query, [data, where])!
+	defer {
+		unsafe {
+			stmt.free()
 		}
 	}
 
 	stmt.execute() or { panic('${@FILE} unable execute query: ${query}, error: ${err}') }
 }
 
-// update is used internally by V's ORM for processing `UPDATE ` queries
-pub fn (db DB) update(table string, data orm.QueryData, where orm.QueryData) ! {
-	query, _ := orm.orm_stmt_gen(.sqlite, table, '`', .update, true, '?', 1, data, where)
-	println(query)
-	// sqlite_stmt_worker(db, query, data, where)!
-}
-
 // delete is used internally by V's ORM for processing `DELETE ` queries
 pub fn (db DB) delete(table string, where orm.QueryData) ! {
-	query, _ := orm.orm_stmt_gen(.sqlite, table, '`', .delete, true, '?', 1, orm.QueryData{},
+	query, converted := orm.orm_stmt_gen(.sqlite, table, '', .delete, true, ':', 1, orm.QueryData{},
 		where)
 
-	println(query)
-	// sqlite_stmt_worker(db, query, orm.QueryData{}, where)!
+	stmt := query_converter(db, query, [converted, where])!
+	defer {
+		unsafe {
+			stmt.free()
+		}
+	}
+
+	stmt.execute() or { panic('${@FILE} unable execute query: ${query}, error: ${err}') }
 }
 
-// last_id is used internally by V's ORM for post-processing `INSERT ` queries
+// last_id is used internally by V's ORM for post-processing `INSERT` queries
 pub fn (db DB) last_id() int {
 	// query := 'SELECT last_insert_rowid();'
 	last_insert_id, _ := db.info() or { panic(err) }
 	return int(last_insert_id)
-	// return db.q_int(query) or { 0 }
 }
 
-// // DDL (table creation/destroying etc)
-
+// DDL (table creation/destroying etc)
 fn sqlite_type_from_v(typ int) !string {
 	return if typ in orm.nums || typ in orm.num64 || typ in [orm.serial, orm.time_, orm.enum_] {
 		'INTEGER'
@@ -149,7 +228,6 @@ pub fn (db DB) create(table string, fields []orm.TableField) ! {
 	// rewrites CREATE TABLE IF NOT EXISTS users (id INTEGER, name TEXT NOT NULL, PRIMARY KEY(id)); into
 	// CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL);
 	for field in fields {
-		// println(field)
 		for attr in field.attrs {
 			if attr.name == 'primary' {
 				for idx, str in field_strs {
@@ -157,7 +235,7 @@ pub fn (db DB) create(table string, fields []orm.TableField) ! {
 						field_strs.delete(idx)
 					}
 
-					if str.starts_with(field.name) {
+					if str.starts_with(field.name) && !str.contains('PRIMARY KEY') {
 						field_strs[idx] = str + ' PRIMARY KEY'
 					}
 				}
@@ -165,7 +243,7 @@ pub fn (db DB) create(table string, fields []orm.TableField) ! {
 			if attr.name == 'sql' {
 				if attr.arg == 'serial' {
 					for idx, str in field_strs {
-						if str.starts_with(field.name) {
+						if str.starts_with(field.name) && !str.contains('AUTOINCREMENT') {
 							field_strs[idx] = str + ' AUTOINCREMENT'
 						}
 					}
@@ -191,35 +269,6 @@ pub fn (db DB) drop(table string) ! {
 	}
 	db.batch(query)!
 }
-
-// // helper
-
-// // Executes query and bind prepared statement data directly
-// fn sqlite_stmt_worker(db DB, query string, data orm.QueryData, where orm.QueryData) ! {
-// 	$if trace_sqlite ? {
-// 		eprintln('> sqlite_stmt_worker query: "${query}"')
-// 	}
-// 	stmt := db.new_init_stmt(query)!
-// 	defer {
-// 		stmt.finalize()
-// 	}
-// 	mut c := 1
-// 	sqlite_stmt_binder(stmt, data, query, mut c)!
-// 	sqlite_stmt_binder(stmt, where, query, mut c)!
-// 	stmt.orm_step(query)!
-// }
-
-// // Binds all values of d in the prepared statement
-// fn sqlite_stmt_binder(stmt Stmt, d orm.QueryData, query string, mut c &int) ! {
-// 	for data in d.data {
-// 		err := bind(stmt, c, data)
-
-// 		if err != 0 {
-// 			return stmt.db.error_message(err, query)
-// 		}
-// 		c++
-// 	}
-// }
 
 // // Universal bind function
 // fn bind(stmt Stmt, c &int, data orm.Primitive) int {

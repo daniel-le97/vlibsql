@@ -36,7 +36,7 @@
 						<div class="info">
 							<div class="module">vlibsql</div>
 							<div class="toggle-version-container">
-								<span> 1cf38ed</span>
+								<span> c8ddf21</span>
 								<div
 									id="dark-mode-toggle"
 									role="switch"
@@ -143,12 +143,21 @@
 </ul>
 </li>
 <li class="open"><a href="#DB">struct DB</a>        <ul>
+<li><a href="#DB.batch">fn batch</a></li>
+<li><a href="#DB.create">fn create</a></li>
+<li><a href="#DB.delete">fn delete</a></li>
+<li><a href="#DB.drop">fn drop</a></li>
+<li><a href="#DB.exec">fn exec</a></li>
 <li><a href="#DB.free">fn free</a></li>
 <li><a href="#DB.info">fn info</a></li>
+<li><a href="#DB.insert">fn insert</a></li>
+<li><a href="#DB.last_id">fn last_id</a></li>
 <li><a href="#DB.prepare">fn prepare</a></li>
-<li><a href="#DB.batch">fn batch</a></li>
-<li><a href="#DB.transaction">fn transaction</a></li>
+<li><a href="#DB.query">fn query</a></li>
+<li><a href="#DB.select">fn select</a></li>
 <li><a href="#DB.sync">fn sync</a></li>
+<li><a href="#DB.transaction">fn transaction</a></li>
+<li><a href="#DB.update">fn update</a></li>
 </ul>
 </li>
 
@@ -492,7 +501,7 @@
 	cypher                   Libsql_cypher_t
 	disable_read_your_writes <span class="token builtin">bool</span>
 <span class="token punctuation">}</span></code></pre>
-<p>@[unsafe] pub fn (mut err LibsqlError) free() { C.libsql_error_deinit(err.libsql_error) unsafe { free(err) } }</p>
+<p>struct Info { last_inserted_rowid i64 total_changes       u64 }</p>
 
 </section>
 
@@ -505,6 +514,46 @@
 	conn C<span class="token punctuation">.</span>libsql_connection_t
 	db   C<span class="token punctuation">.</span>libsql_database_t
 <span class="token punctuation">}</span></code></pre>
+
+
+</section>
+
+		<section id="DB.batch" class="doc-node">
+			<div class="title"><h2>fn (DB) batch <a href="#DB.batch">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span>db DB<span class="token punctuation">)</span> <span class="token function">batch</span><span class="token punctuation">(</span>_sql <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token operator">!</span></code></pre>
+<p>Send a batch statement in a connection</p>
+
+</section>
+
+		<section id="DB.create" class="doc-node">
+			<div class="title"><h2>fn (DB) create <a href="#DB.create">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span>db DB<span class="token punctuation">)</span> <span class="token function">create</span><span class="token punctuation">(</span>table <span class="token builtin">string</span><span class="token punctuation">,</span> fields <span class="token punctuation">[</span><span class="token punctuation">]</span>orm<span class="token punctuation">.</span>TableField<span class="token punctuation">)</span> <span class="token operator">!</span></code></pre>
+<p>create is used internally by V's ORM for processing table creation queries (DDL)</p>
+
+</section>
+
+		<section id="DB.delete" class="doc-node">
+			<div class="title"><h2>fn (DB) delete <a href="#DB.delete">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span>db DB<span class="token punctuation">)</span> <span class="token function">delete</span><span class="token punctuation">(</span>table <span class="token builtin">string</span><span class="token punctuation">,</span> where orm<span class="token punctuation">.</span>QueryData<span class="token punctuation">)</span> <span class="token operator">!</span></code></pre>
+<p>delete is used internally by V's ORM for processing <code>DELETE </code> queries</p>
+
+</section>
+
+		<section id="DB.drop" class="doc-node">
+			<div class="title"><h2>fn (DB) drop <a href="#DB.drop">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span>db DB<span class="token punctuation">)</span> <span class="token function">drop</span><span class="token punctuation">(</span>table <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token operator">!</span></code></pre>
+<p>drop is used internally by V's ORM for processing table destroying queries (DDL)</p>
+
+</section>
+
+		<section id="DB.exec" class="doc-node">
+			<div class="title"><h2>fn (DB) exec <a href="#DB.exec">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span>db DB<span class="token punctuation">)</span> <span class="token function">exec</span><span class="token punctuation">(</span>_sql <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token operator">!</span><span class="token builtin">u64</span></code></pre>
 
 
 </section>
@@ -526,6 +575,22 @@
 
 </section>
 
+		<section id="DB.insert" class="doc-node">
+			<div class="title"><h2>fn (DB) insert <a href="#DB.insert">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span>db DB<span class="token punctuation">)</span> <span class="token function">insert</span><span class="token punctuation">(</span>table <span class="token builtin">string</span><span class="token punctuation">,</span> data orm<span class="token punctuation">.</span>QueryData<span class="token punctuation">)</span> <span class="token operator">!</span></code></pre>
+<p>insert is used internally by V's ORM for processing <code>INSERT</code> queries</p>
+
+</section>
+
+		<section id="DB.last_id" class="doc-node">
+			<div class="title"><h2>fn (DB) last_id <a href="#DB.last_id">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span>db DB<span class="token punctuation">)</span> <span class="token function">last_id</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">int</span></code></pre>
+<p>last_id is used internally by V's ORM for post-processing <code>INSERT</code> queries</p>
+
+</section>
+
 		<section id="DB.prepare" class="doc-node">
 			<div class="title"><h2>fn (DB) prepare <a href="#DB.prepare">#</a></h2></div>
 <pre class="signature">
@@ -534,19 +599,19 @@
 
 </section>
 
-		<section id="DB.batch" class="doc-node">
-			<div class="title"><h2>fn (DB) batch <a href="#DB.batch">#</a></h2></div>
+		<section id="DB.query" class="doc-node">
+			<div class="title"><h2>fn (DB) query <a href="#DB.query">#</a></h2></div>
 <pre class="signature">
-<code><span class="token keyword">fn</span> <span class="token punctuation">(</span>db DB<span class="token punctuation">)</span> <span class="token function">batch</span><span class="token punctuation">(</span>_sql <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token operator">!</span></code></pre>
-<p>Send a batch statement in a connection</p>
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span>db DB<span class="token punctuation">)</span> <span class="token function">query</span><span class="token punctuation">(</span>_sql <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token operator">!</span>Rows</code></pre>
+
 
 </section>
 
-		<section id="DB.transaction" class="doc-node">
-			<div class="title"><h2>fn (DB) transaction <a href="#DB.transaction">#</a></h2></div>
+		<section id="DB.select" class="doc-node">
+			<div class="title"><h2>fn (DB) select <a href="#DB.select">#</a></h2></div>
 <pre class="signature">
-<code><span class="token keyword">fn</span> <span class="token punctuation">(</span>db DB<span class="token punctuation">)</span> <span class="token function">transaction</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!</span>Transaction</code></pre>
-<p>Begin a transaction</p>
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span>db DB<span class="token punctuation">)</span> <span class="token keyword">select</span><span class="token punctuation">(</span>config orm<span class="token punctuation">.</span>SelectConfig<span class="token punctuation">,</span> data orm<span class="token punctuation">.</span>QueryData<span class="token punctuation">,</span> where orm<span class="token punctuation">.</span>QueryData<span class="token punctuation">)</span> <span class="token operator">!</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span>orm<span class="token punctuation">.</span>Primitive</code></pre>
+<p>select is used internally by V's ORM for processing <code>SELECT</code> queries</p>
 
 </section>
 
@@ -558,8 +623,24 @@
 
 </section>
 
+		<section id="DB.transaction" class="doc-node">
+			<div class="title"><h2>fn (DB) transaction <a href="#DB.transaction">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span>db DB<span class="token punctuation">)</span> <span class="token function">transaction</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!</span>Transaction</code></pre>
+<p>Begin a transaction</p>
 
-						<div class="footer">Powered by vdoc. Generated on: 25 Oct 2024 21:18:39</div>
+</section>
+
+		<section id="DB.update" class="doc-node">
+			<div class="title"><h2>fn (DB) update <a href="#DB.update">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span>db DB<span class="token punctuation">)</span> <span class="token function">update</span><span class="token punctuation">(</span>table <span class="token builtin">string</span><span class="token punctuation">,</span> data orm<span class="token punctuation">.</span>QueryData<span class="token punctuation">,</span> where orm<span class="token punctuation">.</span>QueryData<span class="token punctuation">)</span> <span class="token operator">!</span></code></pre>
+<p>update is used internally by V's ORM for processing <code>UPDATE</code> queries</p>
+
+</section>
+
+
+						<div class="footer">Powered by vdoc. Generated on: 27 Oct 2024 12:31:32</div>
 					</div>
 					
 				</div>

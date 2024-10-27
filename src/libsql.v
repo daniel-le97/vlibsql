@@ -344,7 +344,6 @@ struct Row {
 // 	total_changes       u64
 // }
 
-
 @[params]
 pub struct Config {
 pub mut:
@@ -357,7 +356,6 @@ pub mut:
 	cypher                   Libsql_cypher_t
 	disable_read_your_writes bool
 }
-
 
 fn create_desc(conf Config) Libsql_database_desc_t {
 	// im manually assigning the values instead of intializing the struct
@@ -403,8 +401,6 @@ fn create_desc(conf Config) Libsql_database_desc_t {
 	return libsql_desc
 }
 
-
-
 pub fn connect(conf Config) !DB {
 	libsql_desc := create_desc(conf)
 	db := C.libsql_database_init(libsql_desc)
@@ -435,8 +431,28 @@ pub fn (mut db DB) free() {
 	}
 }
 
+pub fn (db DB) query(_sql string) !Rows {
+	stmt := db.prepare(_sql)!
+	defer {
+		unsafe {
+			stmt.free()
+		}
+	}
+	return stmt.query()!
+}
+
+pub fn (db DB) exec(_sql string) !u64 {
+	stmt := db.prepare(_sql)!
+	defer {
+		unsafe {
+			stmt.free()
+		}
+	}
+	return stmt.execute()!
+}
+
 // Returns last_inserted_rowid and total_changes
-pub fn (db DB) info() !(i64,u64) {
+pub fn (db DB) info() !(i64, u64) {
 	info := C.libsql_connection_info(db.conn)
 	if isnil(info.err) {
 		return info.last_inserted_rowid, info.total_changes

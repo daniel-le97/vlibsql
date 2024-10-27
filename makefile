@@ -15,7 +15,7 @@ fmt:
 	v fmt -w .
 
 test:
-	v -stats test ./tests
+	v -stats test .
 
 run:
 	v run .

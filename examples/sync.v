@@ -21,9 +21,9 @@ fn main() {
 	vlibsql.setup(vlibsql.Libsql_config_t{}) or { panic(err) }
 
 	db := vlibsql.connect(
-		url:           libsql_url
-		path:          'sync.db'
-		auth_token:    libsql_auth_token
+		url:        libsql_url
+		path:       'sync.db'
+		auth_token: libsql_auth_token
 		// sync_interval: 60000
 	) or { panic(err) }
 

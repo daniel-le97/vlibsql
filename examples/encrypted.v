@@ -24,7 +24,6 @@ fn main() {
 	INSERT INTO users (name) VALUES ('Iku Turso');
 	"
 
-
 	db.batch(setup_sql) or { panic(err) }
 	forenames := ['John', 'Jane', 'Jack', 'Jill']
 	surnames := ['Smith', 'Doe', 'Black', 'White']
