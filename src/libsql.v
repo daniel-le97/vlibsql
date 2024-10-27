@@ -431,25 +431,25 @@ pub fn (mut db DB) free() {
 	}
 }
 
-pub fn (db DB) query(_sql string) !Rows {
-	stmt := db.prepare(_sql)!
-	defer {
-		unsafe {
-			stmt.free()
-		}
-	}
-	return stmt.query()!
-}
+// pub fn (db DB) query(_sql string) !Rows {
+// 	stmt := db.prepare(_sql)!
+// 	defer {
+// 		unsafe {
+// 			stmt.free()
+// 		}
+// 	}
+// 	return stmt.query()!
+// }
 
-pub fn (db DB) exec(_sql string) !u64 {
-	stmt := db.prepare(_sql)!
-	defer {
-		unsafe {
-			stmt.free()
-		}
-	}
-	return stmt.execute()!
-}
+// pub fn (db DB) exec(_sql string) !u64 {
+// 	stmt := db.prepare(_sql)!
+// 	defer {
+// 		unsafe {
+// 			stmt.free()
+// 		}
+// 	}
+// 	return stmt.execute()!
+// }
 
 // Returns last_inserted_rowid and total_changes
 pub fn (db DB) info() !(i64, u64) {
