@@ -49,3 +49,5 @@ examples:
 	v examples/local.v
 	v examples/memory.v
 	v examples/remote.v
+	v examples/sync.v
+	v examples/orm.v
