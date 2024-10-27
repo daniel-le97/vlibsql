@@ -18,7 +18,7 @@ fn statement_binder(stm Statement, data orm.QueryData) ! {
 				text(string(prim))
 			}
 			orm.InfixType {
-				// integer(prim.right)
+				// TODO handle InfixType
 				print('InfixType')
 				null()
 			}
@@ -45,6 +45,9 @@ fn query_converter(db DB, query string, query_data []orm.QueryData) !Statement {
 		}
 	}
 
+	$if trace_orm ? {
+		eprintln('> vlibsql query: ${new_query}')
+	}
 	stmt := db.prepare(new_query)!
 	for data in query_data {
 		statement_binder(stmt, data) or { panic(err) }
@@ -226,7 +229,7 @@ pub fn (db DB) create(table string, fields []orm.TableField) ! {
 pub fn (db DB) drop(table string) ! {
 	query := 'DROP TABLE IF EXISTS ${table};'
 	$if trace_orm ? {
-		eprintln('> vlibsql orm drop: ${stmt}')
+		eprintln('> vlibsql orm drop: ${query}')
 	}
 	db.batch(query)!
 }
