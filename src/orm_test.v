@@ -31,12 +31,12 @@ mut:
 }
 
 struct TestDefaultAttribute {
-	id         string @[primary; sql: serial]
+	id         int @[primary; sql: serial]
 	name       string
 	created_at string @[default: 'CURRENT_TIMESTAMP'; sql_type: 'TIMESTAMP']
 }
 
-fn test_mysql_orm() {
+fn test_vlibsql_orm() {
 	setup(Libsql_config_t{}) or { panic(err) }
 	db := connect(path: 'orm_test.db') or { panic(err) }
 	defer {
@@ -44,6 +44,28 @@ fn test_mysql_orm() {
 			db.free()
 		}
 	}
+
+	sql db {
+		create table TestDefaultAttribute
+	}!
+
+	default_attr := TestDefaultAttribute{
+		name: 'daniel'
+	}
+	sql db {
+		insert default_attr into TestDefaultAttribute
+	}!
+
+	sql db {
+		update TestDefaultAttribute set name = 'Coco Smith' where id == 1
+	} or { panic(err) }
+
+	all := sql db {
+		select from TestDefaultAttribute
+	}!
+
+	println(all)
+
 	db.create('Test', [
 		orm.TableField{
 			name:  'id'
@@ -89,13 +111,13 @@ fn test_mysql_orm() {
 		kinds:  [.eq, .eq]
 	}) or { panic(err) }
 
-	id := res[0][0]
+	id_ := res[0][0]
 	name := res[0][1]
 	age := res[0][2]
 
-	assert id is int
-	if id is int {
-		assert id == 1
+	assert id_ is int
+	if id_ is int {
+		assert id_ == 1
 	}
 
 	assert name is string
@@ -107,126 +129,4 @@ fn test_mysql_orm() {
 	if age is i64 {
 		assert age == 101
 	}
-
-	/** test orm sql type
-	* - verify if all type create by attribute sql_type has created
-	*/
-	// sql db {
-	// 	create table TestCustomSqlType
-	// }!
-
-	// mut result_custom_sql := db.query("
-	// 	SELECT DATA_TYPE, COLUMN_TYPE
-	// 	FROM INFORMATION_SCHEMA.COLUMNS
-	// 	WHERE TABLE_NAME = 'TestCustomSqlType'
-	// 	ORDER BY ORDINAL_POSITION
-	// ") or {
-	// 	panic(err)
-	// }
-
-	// information_schema_custom_sql := [
-	// 	{
-	// 		'DATA_TYPE':   'bigint'
-	// 		'COLUMN_TYPE': 'bigint unsigned'
-	// 	},
-	// 	{
-	// 		'DATA_TYPE':   'text'
-	// 		'COLUMN_TYPE': 'text'
-	// 	},
-	// 	{
-	// 		'DATA_TYPE':   'varchar'
-	// 		'COLUMN_TYPE': 'varchar(191)'
-	// 	},
-	// 	{
-	// 		'DATA_TYPE':   'datetime'
-	// 		'COLUMN_TYPE': 'datetime(3)'
-	// 	},
-	// 	{
-	// 		'DATA_TYPE':   'mediumint'
-	// 		'COLUMN_TYPE': 'mediumint'
-	// 	},
-	// 	{
-	// 		'DATA_TYPE':   'datetime'
-	// 		'COLUMN_TYPE': 'datetime'
-	// 	},
-	// 	{
-	// 		'DATA_TYPE':   'datetime'
-	// 		'COLUMN_TYPE': 'datetime'
-	// 	},
-	// ]
-
-	// sql db {
-	// 	drop table TestCustomSqlType
-	// }!
-
-	// // assert result_custom_sql.maps() == information_schema_custom_sql
-
-	// /** test_orm_time_type
-	// * - test time.Time v type with sql_type: 'TIMESTAMP'
-	// * - test string v type with sql_type: 'TIMESTAMP'
-	// * - test time.Time v type without
-	// */
-	// today := time.parse('2022-07-16 15:13:27') or {
-	// 	println(err)
-	// 	panic(err)
-	// }
-
-	// model := TestTimeType{
-	// 	username:   'hitalo'
-	// 	created_at: today
-	// 	updated_at: today.str()
-	// 	deleted_at: today
-	// }
-
-	// sql db {
-	// 	create table TestTimeType
-	// }!
-
-	// sql db {
-	// 	insert model into TestTimeType
-	// }!
-
-	// results := sql db {
-	// 	select from TestTimeType where username == 'hitalo'
-	// }!
-
-	// sql db {
-	// 	drop table TestTimeType
-	// }!
-
-	// // assert results[0].created_at == model.created_at
-	// // TODO: investigate why these fail with V 0.4.0 11a8a46 , and fix them:
-	// //	assert results[0].username == model.username
-	// //	assert results[0].updated_at == model.updated_at
-	// //	assert results[0].deleted_at == model.deleted_at
-
-	// /** test default attribute
-	// */
-	// sql db {
-	// 	create table TestDefaultAttribute
-	// }!
-
-	// mut result_defaults := db.query("
-	// 	SELECT COLUMN_DEFAULT
-	// 	FROM INFORMATION_SCHEMA.COLUMNS
-	// 	WHERE TABLE_NAME = 'TestDefaultAttribute'
-	// 	ORDER BY ORDINAL_POSITION
-	// ") or {
-	// 	println(err)
-	// 	panic(err)
-	// }
-	// mut information_schema_defaults_results := []string{}
-
-	// sql db {
-	// 	drop table TestDefaultAttribute
-	// }!
-
-	// information_schema_column_default_sql := [{
-	// 	'COLUMN_DEFAULT': ''
-	// }, {
-	// 	'COLUMN_DEFAULT': ''
-	// }, {
-	// 	'COLUMN_DEFAULT': 'CURRENT_TIMESTAMP'
-	// }]
-	// assert information_schema_column_default_sql == result_defaults.maps()
 }

@@ -19,8 +19,8 @@ fn statement_binder(stm Statement, data orm.QueryData) ! {
 			}
 			orm.InfixType {
 				// TODO handle InfixType
-				print('InfixType')
-				null()
+				panic('InfixType')
+				// null()
 			}
 			else {
 				null()
@@ -59,6 +59,8 @@ fn query_converter(db DB, query string, query_data []orm.QueryData) !Statement {
 // select is used internally by V's ORM for processing `SELECT` queries
 pub fn (db DB) select(config orm.SelectConfig, data orm.QueryData, where orm.QueryData) ![][]orm.Primitive {
 	// 1. Create query and bind necessary data
+	// println(data)
+	println(config)
 	query := orm.orm_select_gen(config, '', true, ':', 1, where)
 	stmt := query_converter(db, query, [data, where])!
 
@@ -78,30 +80,63 @@ pub fn (db DB) select(config orm.SelectConfig, data orm.QueryData, where orm.Que
 		for i in 0 .. cols {
 			val := row.value(i)!
 			val_type := get_value_type(val.type)
-			pri := match val_type {
-				.text {
-					unsafe {
-						orm.Primitive(cstring_to_vstring(val.value.text.ptr))
+			if val_type == Libsql_type_t.text {
+				prim << unsafe { cstring_to_vstring(val.value.text.ptr) }
+			}
+			if val_type == Libsql_type_t.integer {
+				for _ in config.fields {
+					field_type := config.types[i]
+					if field_type == 5 {
+						prim << unsafe { i8(val.value.integer) }
+						break
 					}
-				}
-				.integer {
-					unsafe {
-						orm.Primitive(int(val.value.integer))
+					if field_type == 6 {
+						prim << unsafe { i16(val.value.integer) }
+						break
 					}
-				}
-				.real {
-					unsafe {
-						f64(val.value.real)
+					if field_type == 8 {
+						prim << unsafe { int(val.value.integer) }
+						break
 					}
-				}
-				// .blob
-				else {
-					orm.null_primitive
+					if field_type == 9 {
+						prim << unsafe { i64(val.value.integer) }
+						break
+					}
+					if field_type == 11 {
+						prim << unsafe { u8(val.value.integer) }
+						break
+					}
+					if field_type == 12 {
+						prim << unsafe { u16(val.value.integer) }
+						break
+					}
+					if field_type == 13 {
+						prim << unsafe { u32(val.value.integer) }
+						break
+					}
+					if field_type == 14 {
+						prim << unsafe { u64(val.value.integer) }
+						break
+					}
+					if field_type == 13 {
+						prim << unsafe { u64(val.value.integer) }
+						break
+					}
+					if field_type == 13 {
+						prim << unsafe { u64(val.value.integer) }
+						break
+					}
 				}
 			}
-			// println(typeof[pri]())
-			// print(pri)
-			prim << pri
+			if val_type == Libsql_type_t.null {
+				prim << orm.null_primitive
+			}
+			if val_type == Libsql_type_t.real {
+				prim << unsafe { val.value.real }
+			}
+			if val_type == Libsql_type_t.blob {
+				panic('not implemented, TODO')
+			}
 		}
 		ret << prim
 	}
@@ -185,6 +220,8 @@ pub fn (db DB) create(table string, fields []orm.TableField) ! {
 	mut query := orm.orm_table_gen(table, '', true, 0, fields, sqlite_type_from_v, false) or {
 		return err
 	}
+
+	println(fields)
 	// has := 0
 	sep := 'CREATE TABLE IF NOT EXISTS ${table} '
 	mut field_strs := query.after(sep).find_between('(', ');').split(', ')
