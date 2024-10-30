@@ -118,14 +118,6 @@ pub fn (db DB) select(config orm.SelectConfig, data orm.QueryData, where orm.Que
 						prim << unsafe { u64(val.value.integer) }
 						break
 					}
-					if field_type == 13 {
-						prim << unsafe { u64(val.value.integer) }
-						break
-					}
-					if field_type == 13 {
-						prim << unsafe { u64(val.value.integer) }
-						break
-					}
 				}
 			}
 			if val_type == Libsql_type_t.null {
