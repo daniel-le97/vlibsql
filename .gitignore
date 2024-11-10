@@ -22,6 +22,7 @@ bin/
 # vweb and database
 *.db
 *.js
+libsql-c/
 
 
 # Ignore everything in the examples directory

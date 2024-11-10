@@ -56,6 +56,7 @@ fn main() {
 	all = sql db {
 		select from Users
 	}!
+	
 	println(all)
 	assert all[0].id == 1
 
