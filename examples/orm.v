@@ -9,9 +9,7 @@ struct Users {
 	cats string @[sql_type: 'VARCHAR(255)']
 }
 
-
 fn main() {
-
 	vlibsql.setup(vlibsql.Libsql_config_t{}) or { panic(err) }
 	db := vlibsql.connect(path: 'local.db') or { panic(err) }
 	defer {
@@ -56,7 +54,7 @@ fn main() {
 	all = sql db {
 		select from Users
 	}!
-	
+
 	println(all)
 	assert all[0].id == 1
 
