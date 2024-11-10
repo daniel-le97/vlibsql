@@ -269,6 +269,8 @@ fn C.libsql_row_empty(self Libsql_row_t) bool
 //*Bind a named argument to a statement
 fn C.libsql_statement_bind_named(self Libsql_statement_t, const_name &char, value Libsql_value_t) Libsql_bind_t
 
+fn C.libsql_statement_column_count(self Libsql_statement_t) usize
+
 //*Bind a positional argument to a statement
 fn C.libsql_statement_bind_value(self Libsql_statement_t, value Libsql_value_t) Libsql_bind_t
 
@@ -563,6 +565,12 @@ pub fn (mut stmt Statement) free() {
 	}
 }
 
+// get the column count from a statement
+pub fn (stmt Statement) column_count() int {
+	execute := C.libsql_statement_column_count(stmt.statement)
+	return int(execute)
+}
+
 // Execute a statement
 pub fn (stmt Statement) execute() !u64 {
 	execute := C.libsql_statement_execute(stmt.statement)
@@ -594,6 +602,7 @@ pub fn (stmt Statement) bind_named(name string, val Libsql_value_t) ! {
 	if isnil(res.err) {
 		return
 	}
+	return libsql_error(res.err)
 }
 
 // Bind a positional argument to a statement
@@ -602,6 +611,7 @@ pub fn (stmt Statement) bind_value(val Libsql_value_t) ! {
 	if isnil(res.err) {
 		return
 	}
+	return libsql_error(res.err)
 }
 
 // ROWS
