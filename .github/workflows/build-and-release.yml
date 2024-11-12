@@ -42,6 +42,7 @@ jobs:
 
       - name: Build project
         run: |
+          git clone https://github.com/tursodatabase/libsql-c.git
           cd libsql-c
           cargo build --release --target ${{ matrix.target }} --features encryption
 
