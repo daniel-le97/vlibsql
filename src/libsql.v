@@ -3,6 +3,11 @@ module vlibsql
 #flag -I @VMODROOT/thirdparty/
 #flag -L @VMODROOT/thirdparty/
 #flag -llibsql
+#flag linux -lc
+#flag linux -lm
+$if tinyc && linux {
+	#flag linux -lgcc_s
+}
 #flag darwin -framework CoreFoundation
 #flag darwin -framework Security
 #include "libsql.h"

@@ -3,6 +3,9 @@
 
 LIBRARY_LIB ?= liblibsql.a
 
+LINUX_CMD = cargo build --release
+MACOS_CMD = cargo build --release --features encryption
+
 docs:
 	rm -rf ./docs
 	v doc ./src -comments -f markdown -o - > docs.md
@@ -30,19 +33,46 @@ clean-symlink:
 clean-examples:
 	find ./examples -type f ! -name "*.v" -exec rm {} \;
 
-update:
-	@if [ -d "$(CURDIR)/libsql-c" ]; then \
-		echo "libsql-c exists, proceeding with update..."; \
-		cd $(CURDIR)/libsql-c && git pull && cargo build --release --features encryption; \
-		mv $(CURDIR)/libsql-c/target/release/$(LIBRARY_LIB) $(CURDIR)/thirdparty/$(LIBRARY_LIB); \
-		cp $(CURDIR)/libsql-c/libsql.h $(CURDIR)/thirdparty/libsql.h; \
-	else \
+# update:
+# 	@if [ -d "$(CURDIR)/libsql-c" ]; then \
+# 		echo "libsql-c exists, proceeding with update..."; \
+# 		cd $(CURDIR)/libsql-c && git pull && cargo build --release; \
+# 		mv $(CURDIR)/libsql-c/target/release/$(LIBRARY_LIB) $(CURDIR)/thirdparty/$(LIBRARY_LIB); \
+# 		cp $(CURDIR)/libsql-c/libsql.h $(CURDIR)/thirdparty/libsql.h; \
+# 	else \
+# 		echo "libsql-c does not exist, installing..."; \
+# 		git clone https://github.com/tursodatabase/libsql-c.git $(CURDIR)/libsql-c; \
+# 		cd $(CURDIR)/libsql-c && $(LINUX_CMD); \
+# 		mv $(CURDIR)/libsql-c/target/release/$(LIBRARY_LIB) $(CURDIR)/thirdparty/$(LIBRARY_LIB); \
+# 		cp $(CURDIR)/libsql-c/libsql.h $(CURDIR)/thirdparty/libsql.h; \
+# 	fi
+
+install-rust:
+	@if [ ! $(shell which cargo) ]; then \
+        echo "Rust is not installed. Do you want to install it? (yes/no)"; \
+        read answer; \
+        if [ "$$answer" = "yes" ]; then \
+            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh; \
+        else \
+            echo "Rust installation skipped."; \
+			exit 1; \
+        fi; \
+    else \
+        echo "Rust is already installed."; \
+    fi
+
+update: install-rust
+	@if [ ! -d "$(CURDIR)/libsql-c" ]; then \
 		echo "libsql-c does not exist, installing..."; \
 		git clone https://github.com/tursodatabase/libsql-c.git $(CURDIR)/libsql-c; \
-		cd $(CURDIR)/libsql-c && cargo build --release --features encryption; \
-		mv $(CURDIR)/libsql-c/target/release/$(LIBRARY_LIB) $(CURDIR)/thirdparty/$(LIBRARY_LIB); \
-		cp $(CURDIR)/libsql-c/libsql.h $(CURDIR)/thirdparty/libsql.h; \
 	fi
+	@if [ "$(shell uname)" = "Darwin" ]; then \
+		cd $(CURDIR)/libsql-c && git pull && $(MACOS_CMD); \
+	else \
+		cd $(CURDIR)/libsql-c && git pull && $(LINUX_CMD); \
+    fi
+	mv $(CURDIR)/libsql-c/target/release/$(LIBRARY_LIB) $(CURDIR)/thirdparty/$(LIBRARY_LIB)
+	cp $(CURDIR)/libsql-c/libsql.h $(CURDIR)/thirdparty/libsql.h
 
 examples:
 	v examples/encrypted.v
