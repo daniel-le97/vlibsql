@@ -15,13 +15,14 @@ learn more at
 
 cargo and rust need to be installed [Rust and Cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html)
 
-1. this will install libsql-c if not found
 
+2. this will install libsql-c if not found ( copies liblibsql.a to ./thirdparty)
+   - this will also prompt to install rust if not found in $PATH
 ```bash
 make update
 ```
 
-2. dynamic library (example)
+3. dynamic library (example)
 
 ```bash
 make update LIBRARY_LIB=liblibsql.dylib
@@ -40,6 +41,7 @@ make update LIBRARY_LIB=liblibsql.dylib
 
 - default: `cargo build --release`
 - with encryption: `cargo build --release --features encryption`
+   - currently ive only gotten encryption on darwin, feel free to test this
 
 3. The compiled library will be in `libsql-c/target/release/`:
 

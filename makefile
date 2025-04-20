@@ -33,20 +33,6 @@ clean-symlink:
 clean-examples:
 	find ./examples -type f ! -name "*.v" -exec rm {} \;
 
-# update:
-# 	@if [ -d "$(CURDIR)/libsql-c" ]; then \
-# 		echo "libsql-c exists, proceeding with update..."; \
-# 		cd $(CURDIR)/libsql-c && git pull && cargo build --release; \
-# 		mv $(CURDIR)/libsql-c/target/release/$(LIBRARY_LIB) $(CURDIR)/thirdparty/$(LIBRARY_LIB); \
-# 		cp $(CURDIR)/libsql-c/libsql.h $(CURDIR)/thirdparty/libsql.h; \
-# 	else \
-# 		echo "libsql-c does not exist, installing..."; \
-# 		git clone https://github.com/tursodatabase/libsql-c.git $(CURDIR)/libsql-c; \
-# 		cd $(CURDIR)/libsql-c && $(LINUX_CMD); \
-# 		mv $(CURDIR)/libsql-c/target/release/$(LIBRARY_LIB) $(CURDIR)/thirdparty/$(LIBRARY_LIB); \
-# 		cp $(CURDIR)/libsql-c/libsql.h $(CURDIR)/thirdparty/libsql.h; \
-# 	fi
-
 install-rust:
 	@if [ ! $(shell which cargo) ]; then \
         echo "Rust is not installed. Do you want to install it? (yes/no)"; \
@@ -75,7 +61,9 @@ update: install-rust
 	cp $(CURDIR)/libsql-c/libsql.h $(CURDIR)/thirdparty/libsql.h
 
 examples:
-	v examples/encrypted.v
+	@if [ "$(shell uname)" = "Darwin" ]; then \
+		v examples/encrypted.v; \
+    fi
 	v examples/local.v
 	v examples/memory.v
 	v examples/remote.v
